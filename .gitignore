@@ -1,0 +1,6 @@
+
+/rust_relese/node_modules
+/rust_relese/node_modules
+/target
+*.lock
+/rust_relese
