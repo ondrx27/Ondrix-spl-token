@@ -5,10 +5,13 @@ on:
     paths:
       - 'Cargo.toml'
       - 'Cargo.lock'
+      - '.github/workflows/dependency-lock-check.yml'
   push:
     branches: [main, master]
     paths:
       - 'Cargo.toml'
+      - '.github/workflows/dependency-lock-check.yml'
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   check-dependency-lock:
