@@ -38,10 +38,16 @@ jobs:
           echo "=== Checking Cargo.toml for exact version locks ==="
           echo ""
 
-          # Check for any versions without = prefix
-          if grep -E '^[^#]*[a-z-]+ = "[^=]' Cargo.toml | grep -v '^\[' | grep -v 'crate-type'; then
+          # Extract only [dependencies] section and check versions
+          if awk '/^\[dependencies\]/,/^\[/ {print}' Cargo.toml | \
+             grep -E '^[^#\[].*=' | \
+             grep -v 'crate-type' | \
+             grep -E '= "[^=]'; then
             echo ""
             echo "❌ ERROR: Dependencies must use exact versions with = prefix"
+            echo ""
+            echo "Found dependencies without exact version lock:"
+            awk '/^\[dependencies\]/,/^\[/ {print}' Cargo.toml | grep -E '^[^#\[].*=' | grep -v 'crate-type' | grep -E '= "[^=]'
             echo ""
             echo "Examples:"
             echo "  ❌ solana-program = \"1.18.26\"    (WRONG)"
