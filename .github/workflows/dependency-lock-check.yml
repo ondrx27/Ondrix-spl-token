@@ -1,0 +1,78 @@
+name: Dependency Lock Check
+
+on:
+  pull_request:
+    paths:
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+  push:
+    branches: [main, master]
+    paths:
+      - 'Cargo.toml'
+
+jobs:
+  check-dependency-lock:
+    name: Verify Dependency Versions are Locked
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if Cargo.toml was modified
+        id: check_changes
+        run: |
+          if git diff HEAD^ HEAD --name-only | grep -q "Cargo.toml"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "⚠️  Cargo.toml was modified!"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "✓ Cargo.toml not modified"
+          fi
+
+      - name: Verify exact version syntax
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo "=== Checking Cargo.toml for exact version locks ==="
+          echo ""
+
+          # Check for any versions without = prefix
+          if grep -E '^[^#]*[a-z-]+ = "[^=]' Cargo.toml | grep -v '^\[' | grep -v 'crate-type'; then
+            echo ""
+            echo "❌ ERROR: Dependencies must use exact versions with = prefix"
+            echo ""
+            echo "Examples:"
+            echo "  ❌ solana-program = \"1.18.26\"    (WRONG)"
+            echo "  ✅ solana-program = \"=1.18.26\"   (CORRECT)"
+            echo ""
+            exit 1
+          else
+            echo "✅ All dependencies use exact version syntax (=)"
+          fi
+
+      - name: Security review required
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          echo ""
+          echo "================================================"
+          echo "  ⚠️  DEPENDENCY CHANGE DETECTED"
+          echo "================================================"
+          echo ""
+          echo "Security Review Checklist:"
+          echo ""
+          echo "✓ All versions use exact match (= not ^ or ~)"
+          echo "✓ Changes approved by security team"
+          echo "✓ Run 'cargo audit' after changes"
+          echo "✓ Update .cargo/audit.toml if new advisories"
+          echo "✓ Verify cargo build-sbf still works"
+          echo "✓ Document reason for dependency update"
+          echo ""
+          echo "If this is v1.0.1-audit or later, this is expected."
+          echo "Otherwise, revert dependency changes."
+          echo ""
+          echo "================================================"
+
+          # This check passes but alerts team to review
+          exit 0
