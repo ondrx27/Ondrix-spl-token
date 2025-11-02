@@ -173,6 +173,9 @@ View on:
 * 🚨 Error Handling: Custom codes for failure cases
 * 📜 Immutable Setup: 9 decimals, 500M fixed total supply
 
+  <img width="1024" height="1024" alt="file_000000000c9c61f79986adaf04a075e6" src="https://github.com/user-attachments/assets/ba6b373e-bce4-4db8-ad45-84ab98f75494" />
+
+
 ---
 
 ## 🖥️ Usage
