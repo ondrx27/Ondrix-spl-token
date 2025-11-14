@@ -9,7 +9,7 @@ The **ONDRIX** token is a fixed-supply token on the Solana blockchain, built usi
 | Property             | Value                                                                                                                        |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | **Name**             | ONDRIX                                                                                                                       |
-| **Symbol**           | ONDRIX                                                                                                                       |
+| **Symbol**           | ONDRX                                                                                                                        |
 | **Total Supply**     | 500,000,000 tokens (immutable)                                                                                               |
 | **Decimals**         | 9                                                                                                                            |
 | **Mint Authority**   | Permanently revoked                                                                                                          |
