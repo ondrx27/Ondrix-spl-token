@@ -1,4 +1,4 @@
-# 🌟 ONDRIX Fixed Supply Token on Solana
+# 🌟 ONDRX Fixed Supply Token on Solana
 
 ## 📖 Overview
 
